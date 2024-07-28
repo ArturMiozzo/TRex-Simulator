@@ -16,7 +16,7 @@ import java.util.List;
 
 import manager.EnemyManager;
 
-public class Cactuses {
+public class Cactuses extends Enemy {
 	
 	private class Cactus {
 		
@@ -40,16 +40,14 @@ public class Cactuses {
 	// max number of cactuses grouped
 	private static final int MAX_CACTUS_GROUP = 3;
 	
-	private EnemyManager eManager;
-	private GameScreen gameScreen;
 	private List<Cactus> cactuses;
 	
 	public Cactuses(GameScreen gameScreen, EnemyManager eManager) {
-		this.eManager = eManager;
-		this.gameScreen = gameScreen;
+		super(gameScreen, eManager);
 		cactuses = new ArrayList<Cactus>();
 	}
 	
+	@Override
 	public void updatePosition() {
 		for(Iterator<Cactus> i = cactuses.iterator(); i.hasNext();) {
 			Cactus cactus = i.next();
@@ -60,6 +58,7 @@ public class Cactuses {
 		}
 	}
 	
+	@Override
 	public boolean spaceAvailable() {
 		for(Iterator<Cactus> i = cactuses.iterator(); i.hasNext();) {
 			Cactus cactus = i.next();
@@ -88,6 +87,7 @@ public class Cactuses {
 		return false;
 	}
 	
+	@Override
 	public boolean isCollision(Rectangle dinoHitBox) {
 		for(Iterator<Cactus> i = cactuses.iterator(); i.hasNext();) {
 			Cactus cactus = i.next();
@@ -111,7 +111,8 @@ public class Cactuses {
 	public void clearCactuses() {
 		cactuses.clear();
 	}
-	
+
+	@Override
 	public void draw(Graphics g) {
 		for(Iterator<Cactus> i = cactuses.iterator(); i.hasNext();) {
 			Cactus cactus = i.next();
@@ -119,6 +120,7 @@ public class Cactuses {
 		}
 	}
 	
+	@Override
 	public void drawHitbox(Graphics g) {
 		g.setColor(Color.RED);
 		for(Iterator<Cactus> i = cactuses.iterator(); i.hasNext();) {

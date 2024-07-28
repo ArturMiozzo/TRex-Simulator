@@ -8,7 +8,6 @@ import javax.swing.JLabel;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
 
-@SuppressWarnings(value = { "serial" })
 public class Controls {
 
 	private static final int FOCUS_STATE = JComponent.WHEN_IN_FOCUSED_WINDOW;
@@ -89,7 +88,6 @@ public class Controls {
 	private class PressUpAction extends AbstractAction {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-//			System.out.println("up");
 			isPressedUp = true;
 		}
 	}
@@ -97,7 +95,6 @@ public class Controls {
 	private class ReleaseUpAction extends AbstractAction {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-//			System.out.println("released up");
 			gameScreen.releaseUpAction();
 			isPressedUp = false;
 		}
@@ -106,7 +103,6 @@ public class Controls {
 	private class PressDownAction extends AbstractAction {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-//			System.out.println("down");
 			isPressedDown = true;
 		}
 	}
@@ -114,7 +110,6 @@ public class Controls {
 	private class ReleaseDownAction extends AbstractAction {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-//			System.out.println("released down");
 			gameScreen.releaseDownAction();
 			isPressedDown = false;
 		}
@@ -123,7 +118,6 @@ public class Controls {
 	private class PressDebugAction extends AbstractAction {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-//			System.out.println("press debug");
 			gameScreen.pressDebugAction();
 		}
 	}
@@ -131,7 +125,6 @@ public class Controls {
 	private class PressPauseAction extends AbstractAction {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-//			System.out.println("press pause");
 			gameScreen.pressPauseAction();
 		}
 	}
