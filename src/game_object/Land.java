@@ -1,10 +1,10 @@
 package game_object;
 
 import user_interface.GameScreen;
+import util.Resource;
 
 import static user_interface.GameWindow.SCREEN_HEIGHT;
 import static user_interface.GameWindow.SCREEN_WIDTH;
-import static util.Resource.getImage;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -20,7 +20,7 @@ public class Land extends Scenario {
 
 	public Land(GameScreen gameScreen) {
 		super(gameScreen);
-		land = getImage("resources/land.png");
+		land = Resource.LAND_SPRITE;
 		y = SCREEN_HEIGHT - land.getHeight() * 2 - 4;
 		landWidthScaled = land.getWidth() * 2;
 		landHeightScaled = land.getHeight() * 2;

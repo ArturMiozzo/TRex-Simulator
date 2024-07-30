@@ -1,4 +1,4 @@
-package misc;
+package gameplay;
 
 import user_interface.GameScreen;
 
@@ -17,9 +17,6 @@ public class Controls {
 	private static final String W_UP = "W_UP";
 	private static final String S_DOWN = "S_DOWN";
 	private static final String SPACE_UP = "SPACE_UP";
-	private static final String DEBUG_MENU = "DEBUG_MENU";
-	private static final String P_PAUSE = "P";
-	private static final String ESCAPE_PAUSE = "ESCAPE";
 	
 	private static final String RELEASED_UP = "RELEASED_UP";
 	private static final String RELEASED_DOWN = "RELEASED_DOWN";
@@ -31,8 +28,6 @@ public class Controls {
 	public JLabel releaseUp = new JLabel();
 	public JLabel pressDown = new JLabel();
 	public JLabel releaseDown = new JLabel();
-	public JLabel pressDebug = new JLabel();
-	public JLabel pressPause = new JLabel();
 	
 	private boolean isPressedUp = false;
 	private boolean isPressedDown = false;
@@ -66,15 +61,6 @@ public class Controls {
 		pressUp.getActionMap().put(SPACE_UP, new PressUpAction());
 		releaseUp.getInputMap(FOCUS_STATE).put(KeyStroke.getKeyStroke("released SPACE"), RELEASED_SPACE_UP);
 		releaseUp.getActionMap().put(RELEASED_SPACE_UP, new ReleaseUpAction());
-		// PRESS RELEASE BACKTICK //
-		pressDebug.getInputMap(FOCUS_STATE).put(KeyStroke.getKeyStroke("BACK_QUOTE"), DEBUG_MENU);
-		pressDebug.getActionMap().put(DEBUG_MENU, new PressDebugAction());
-		// PRESS RELEASE P //
-		pressPause.getInputMap(FOCUS_STATE).put(KeyStroke.getKeyStroke("P"), P_PAUSE);
-		pressPause.getActionMap().put(P_PAUSE, new PressPauseAction());
-		// PRESS RELEASE ESCAPE //
-		pressPause.getInputMap(FOCUS_STATE).put(KeyStroke.getKeyStroke("ESCAPE"), ESCAPE_PAUSE);
-		pressPause.getActionMap().put(ESCAPE_PAUSE, new PressPauseAction());
 	}
 	
 	public boolean isPressedUp() {
@@ -113,20 +99,5 @@ public class Controls {
 			gameScreen.releaseDownAction();
 			isPressedDown = false;
 		}
-	}
-	
-	private class PressDebugAction extends AbstractAction {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			gameScreen.pressDebugAction();
-		}
-	}
-	
-	private class PressPauseAction extends AbstractAction {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			gameScreen.pressPauseAction();
-		}
-	}
-	
+	}	
 }

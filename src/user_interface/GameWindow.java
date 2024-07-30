@@ -1,23 +1,23 @@
 package user_interface;
 
 import javax.swing.JFrame;
-import java.awt.Toolkit;
 
 public class GameWindow extends JFrame {
 	
-	public static final int SCREEN_WIDTH = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-	public static final int SCREEN_HEIGHT = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+	public static final int SCREEN_WIDTH = 1200;
+	public static final int SCREEN_HEIGHT = 300;
 
 	private GameScreen gameScreen;
 	
 	public GameWindow() {
-		super("Dino");
+		super("TRex Simulator");
 
 		setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 		
-		setResizable(true);
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
+		setUndecorated(true);
 		
 		gameScreen = new GameScreen();
 		add(gameScreen);

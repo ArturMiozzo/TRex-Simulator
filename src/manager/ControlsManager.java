@@ -1,6 +1,6 @@
 package manager;
 
-import misc.Controls;
+import gameplay.Controls;
 import user_interface.GameScreen;
 
 public class ControlsManager {

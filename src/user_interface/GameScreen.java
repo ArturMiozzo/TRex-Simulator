@@ -2,25 +2,23 @@ package user_interface;
 
 import static user_interface.GameWindow.SCREEN_HEIGHT;
 import static user_interface.GameWindow.SCREEN_WIDTH;
-import static util.Resource.getImage;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
+import enumeration.DinoState;
+import enumeration.GameState;
 import game_object.Clouds;
 import game_object.Dino;
 import game_object.Land;
 import game_object.Score;
+import gameplay.Controls;
 import manager.ControlsManager;
 import manager.EnemyManager;
-import manager.SoundManager;
-import misc.Controls;
-import misc.DinoState;
-import misc.GameState;
+import util.Resource;
 
 public class GameScreen extends JPanel implements Runnable {
 
@@ -37,10 +35,8 @@ public class GameScreen extends JPanel implements Runnable {
 	private final int NS_PER_FRAME = 1_000_000_000 / FPS;
 
 	private double speedX = STARTING_SPEED_X;
-	private GameState gameState = GameState.GAME_STATE_START;
-	private int introCountdown = 1000;
+	private GameState gameState = GameState.START;
 	private boolean introJump = true;
-	private boolean showHitboxes = false;
 	private boolean collisions = true;
 
 	private Controls controls;
@@ -48,9 +44,8 @@ public class GameScreen extends JPanel implements Runnable {
 	private Dino dino;
 	private Land land;
 	private Clouds clouds;
-	private EnemyManager eManager;
-	private SoundManager gameOverSound;
-	private ControlsManager cManager;;
+	private EnemyManager enemyManager;
+	private ControlsManager controlsManager;
 
 	public GameScreen() {
 		thread = new Thread(this);
@@ -59,17 +54,13 @@ public class GameScreen extends JPanel implements Runnable {
 		super.add(controls.releaseUp);
 		super.add(controls.pressDown);
 		super.add(controls.releaseDown);
-		super.add(controls.pressDebug);
-		super.add(controls.pressPause);
 		
-		cManager = new ControlsManager(controls, this);
-		score = new Score(this);
+		controlsManager = new ControlsManager(controls, this);
+		score = new Score();
 		dino = new Dino(controls);
 		land = new Land(this);
 		clouds = new Clouds(this);
-		eManager = new EnemyManager(this);
-		gameOverSound = new SoundManager("resources/dead.wav");
-		gameOverSound.startThread();
+		enemyManager = new EnemyManager(this);
 	}
 
 	public void startThread() {
@@ -81,17 +72,16 @@ public class GameScreen extends JPanel implements Runnable {
 		long prevFrameTime = System.nanoTime();
 		int waitingTime = 0;
 		while (true) {
-			cManager.update();
+			controlsManager.update();
 			updateFrame();
 			repaint();
 			waitingTime = (int) ((NS_PER_FRAME - (System.nanoTime() - prevFrameTime)) / 1_000_000);
 			if (waitingTime < 0)
 				waitingTime = 1;
-			SoundManager.WAITING_TIME = waitingTime;
+				
 			// little pause to not start new game if you are spamming your keys
-			
-			if (gameState == GameState.GAME_STATE_OVER)
-				waitingTime = 1000;
+			if (gameState == GameState.END)
+				waitingTime = 300;
 			try {
 				Thread.sleep(waitingTime);
 			} catch (InterruptedException e) {
@@ -112,31 +102,28 @@ public class GameScreen extends JPanel implements Runnable {
 	// update all entities positions
 	private void updateFrame() {
 		switch (gameState) {
-			case GAME_STATE_INTRO:
+			case INTRO:
 				dino.updatePosition();
 				if (!introJump && dino.getDinoState() == DinoState.DINO_RUN)
 					land.updatePosition();
 				clouds.updatePosition();
-				introCountdown += speedX;
-				if (introCountdown <= 0)
-					gameState = GameState.GAME_STATE_IN_PROGRESS;
+					gameState = GameState.IN_PROGRESS;
 				if (introJump) {
 					dino.jump();
 					dino.setDinoState(DinoState.DINO_JUMP);
 					introJump = false;
 				}
 				break;
-			case GAME_STATE_IN_PROGRESS:
+			case IN_PROGRESS:
 				speedX += DIFFICULTY_INC;
 				dino.updatePosition();
 				land.updatePosition();
 				clouds.updatePosition();
-				eManager.updatePosition();
-				if (collisions && eManager.isCollision(dino.getHitbox())) {
-					gameState = GameState.GAME_STATE_OVER;
+				enemyManager.updatePosition();
+				if (collisions && enemyManager.isCollision(dino.getHitbox())) {
+					gameState = GameState.END;
 					dino.dinoGameOver();
 					score.writeScore();
-					gameOverSound.play();
 				}
 				score.scoreUp();
 				break;
@@ -151,45 +138,30 @@ public class GameScreen extends JPanel implements Runnable {
 		g.setColor(new Color(246, 246, 246));
 		g.fillRect(0, 0, getWidth(), getHeight());
 		switch (gameState) {
-			case GAME_STATE_START:
+			case START:
 				startScreen(g);
 				break;
-			case GAME_STATE_INTRO:
+			case INTRO:
 				introScreen(g);
 				break;
-			case GAME_STATE_IN_PROGRESS:
+			case IN_PROGRESS:
 				inProgressScreen(g);
 				break;
-			case GAME_STATE_OVER:
+			case END:
 				gameOverScreen(g);
-				break;
-			case GAME_STATE_PAUSED:
-				pausedScreen(g);
 				break;
 			default:
 				break;
 		}
 	}
 
-	private void drawDebugMenu(Graphics g) {
-		g.setColor(Color.RED);
-		g.drawLine(0, GROUND_Y, getWidth(), GROUND_Y);
-		
-		dino.drawHitbox(g);
-		eManager.drawHitbox(g);
-		String speedInfo = "SPEED_X: " + String.valueOf(Math.round(speedX * 1000D) / 1000D);
-		g.drawString(speedInfo, (int) (SCREEN_WIDTH / 100), (int) (SCREEN_HEIGHT / 25));
-	}
-
 	private void startScreen(Graphics g) {
 		land.draw(g);
 		dino.draw(g);
-		BufferedImage introImage = getImage("resources/intro-text.png");
+		BufferedImage introImage = Resource.INTRO_SPRITE;
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, introCountdown / 1000f));
 		g2d.drawImage(introImage, SCREEN_WIDTH / 2 - introImage.getWidth() / 2,
 				SCREEN_HEIGHT / 2 - introImage.getHeight(), null);
-		g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 	}
 
 	private void introScreen(Graphics g) {
@@ -200,76 +172,48 @@ public class GameScreen extends JPanel implements Runnable {
 	private void inProgressScreen(Graphics g) {
 		clouds.draw(g);
 		land.draw(g);
-		eManager.draw(g);
+		enemyManager.draw(g);
 		dino.draw(g);
 		score.draw(g);
-		if (showHitboxes)
-			drawDebugMenu(g);
 	}
 
 	private void gameOverScreen(Graphics g) {
 		inProgressScreen(g);
-		BufferedImage gameOverImage = getImage("resources/game-over.png");
-		BufferedImage replayImage = getImage("resources/replay.png");
+		BufferedImage gameOverImage = Resource.GAME_OVER_SPRITE;
+		BufferedImage replayImage = Resource.REPLAY_SPRITE;
 		g.drawImage(gameOverImage, SCREEN_WIDTH / 2 - gameOverImage.getWidth() / 2,
 				SCREEN_HEIGHT / 2 - gameOverImage.getHeight() * 2, null);
 		g.drawImage(replayImage, SCREEN_WIDTH / 2 - replayImage.getWidth() / 2, SCREEN_HEIGHT / 2, null);
 	}
 
-	private void pausedScreen(Graphics g) {
-		inProgressScreen(g);
-		BufferedImage pausedImage = getImage("resources/paused.png");
-		g.drawImage(pausedImage, SCREEN_WIDTH / 2 - pausedImage.getWidth() / 2,
-				SCREEN_HEIGHT / 2 - pausedImage.getHeight(), null);
-	}
-
 	public void pressUpAction() {
-		if (gameState == GameState.GAME_STATE_IN_PROGRESS) {
+		if (gameState == GameState.IN_PROGRESS) {
 			dino.jump();
 			dino.setDinoState(DinoState.DINO_JUMP);
 		}
 	}
 
 	public void releaseUpAction() {
-		if (gameState == GameState.GAME_STATE_START)
-			gameState = GameState.GAME_STATE_INTRO;
-		if (gameState == GameState.GAME_STATE_OVER) {
+		if (gameState == GameState.START)
+			gameState = GameState.INTRO;
+		if (gameState == GameState.END) {
 			speedX = STARTING_SPEED_X;
 			score.scoreReset();
-			eManager.clearEnemy();
+			enemyManager.clearEnemy();
 			dino.resetDino();
 			clouds.clearClouds();
 			land.resetLand();
-			gameState = GameState.GAME_STATE_IN_PROGRESS;
+			gameState = GameState.IN_PROGRESS;
 		}
 	}
 
 	public void pressDownAction() {
-		if (dino.getDinoState() != DinoState.DINO_JUMP && gameState == GameState.GAME_STATE_IN_PROGRESS)
+		if (dino.getDinoState() != DinoState.DINO_JUMP && gameState == GameState.IN_PROGRESS)
 			dino.setDinoState(DinoState.DINO_DOWN_RUN);
 	}
 
 	public void releaseDownAction() {
-		if (dino.getDinoState() != DinoState.DINO_JUMP && gameState == GameState.GAME_STATE_IN_PROGRESS)
+		if (dino.getDinoState() != DinoState.DINO_JUMP && gameState == GameState.IN_PROGRESS)
 			dino.setDinoState(DinoState.DINO_RUN);
 	}
-
-	public void pressDebugAction() {
-		if (showHitboxes == false)
-			showHitboxes = true;
-		else
-			showHitboxes = false;
-		if (collisions == true)
-			collisions = false;
-		else
-			collisions = true;
-	}
-
-	public void pressPauseAction() {
-		if (gameState == GameState.GAME_STATE_IN_PROGRESS)
-			gameState = GameState.GAME_STATE_PAUSED;
-		else
-			gameState = GameState.GAME_STATE_IN_PROGRESS;
-	}
-
 }

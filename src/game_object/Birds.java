@@ -1,11 +1,10 @@
 package game_object;
 
-import misc.Animation;
 import user_interface.GameScreen;
+import util.Resource;
 
 import static user_interface.GameScreen.GROUND_Y;
 import static user_interface.GameWindow.SCREEN_WIDTH;
-import static util.Resource.getImage;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -14,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import gameplay.Animation;
 import manager.EnemyManager;
 
 public class Birds extends Enemy {
@@ -39,7 +39,7 @@ public class Birds extends Enemy {
 	private static final int[] HITBOX_WINGS_UP = { 20, 4, -40, -20 };
 	private static final int[] HITBOX_WINGS_DOWN = { 20, 4, -40, -28 };
 	// value to check current sprite
-	private final int WINGS_DOWN_HEIGHT = getImage("resources/bird-fly-1.png").getHeight();
+	private final int WINGS_DOWN_HEIGHT = Resource.BIRD_SPRITE[0].getHeight();
 
 	private List<Bird> birds;
 
@@ -73,8 +73,8 @@ public class Birds extends Enemy {
 	public boolean createBird() {
 		if (Math.random() * 100 < eManager.getBirdsPercentage()) {
 			Animation birdFly = new Animation(400);
-			birdFly.addSprite(getImage("resources/bird-fly-1.png"));
-			birdFly.addSprite(getImage("resources/bird-fly-2.png"));
+			birdFly.addSprite(Resource.BIRD_SPRITE[0]);
+			birdFly.addSprite(Resource.BIRD_SPRITE[1]);
 			birds.add(new Bird(SCREEN_WIDTH, (int) (Math.random() * (GROUND_Y - birdFly.getSprite().getHeight())),
 					birdFly));
 			return true;

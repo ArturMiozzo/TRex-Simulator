@@ -1,10 +1,10 @@
 package game_object;
 
 import user_interface.GameScreen;
+import util.Resource;
 
 import static user_interface.GameScreen.GROUND_Y;
 import static user_interface.GameWindow.SCREEN_WIDTH;
-import static util.Resource.getImage;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -73,7 +73,7 @@ public class Cactuses extends Enemy {
 		if(Math.random() * 100 < eManager.getCactusesPercentage()) {
 			// Math random to get number of cactuses in a group
 			for(int i = 0, numberOfCactuses = (int)(Math.random() * MAX_CACTUS_GROUP + 1); i < numberOfCactuses; i++) {
-				BufferedImage cactusImage = getImage("resources/cactus-" + (int)(Math.random() * CACTUSES_AMOUNT + 1) + ".png");
+				BufferedImage cactusImage = Resource.CACTUS_SPRITE[(int)(Math.random() * CACTUSES_AMOUNT)];
 				int x = SCREEN_WIDTH;
 				int y = GROUND_Y - cactusImage.getHeight();
 				// if it is first cactus of this group x is SCREEN_WIDTH

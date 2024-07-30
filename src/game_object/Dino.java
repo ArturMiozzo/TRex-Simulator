@@ -3,17 +3,16 @@ package game_object;
 import static user_interface.GameScreen.GRAVITY;
 import static user_interface.GameScreen.GROUND_Y;
 import static user_interface.GameScreen.SPEED_Y;
-import static util.Resource.getImage;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import manager.SoundManager;
-import misc.Animation;
-import misc.Controls;
-import misc.DinoState;
+import enumeration.DinoState;
+import gameplay.Animation;
+import gameplay.Controls;
+import util.Resource;
 
 public class Dino {
 	
@@ -37,20 +36,22 @@ public class Dino {
 	private BufferedImage dinoDead;
 	private Animation dinoRun;
 	private Animation dinoDownRun;
-	private SoundManager jumpSound;
 	
 	public Dino(Controls controls) {
 		this.controls = controls;
+		
 		dinoRun = new Animation(150);
-		dinoRun.addSprite(getImage("resources/dino-run-1.png"));
-		dinoRun.addSprite(getImage("resources/dino-run-2.png"));
+		for(BufferedImage dinoRunSprite : Resource.DINO_RUN_SPRITE) {
+			dinoRun.addSprite(dinoRunSprite);
+		}
+
 		dinoDownRun = new Animation(150);
-		dinoDownRun.addSprite(getImage("resources/dino-down-run-1.png"));
-		dinoDownRun.addSprite(getImage("resources/dino-down-run-2.png"));
-		dinoJump = getImage("resources/dino-jump.png");
-		dinoDead = getImage("resources/dino-dead.png");
-		jumpSound = new SoundManager("resources/jump.wav");
-		jumpSound.startThread();
+		for(BufferedImage dinoDownRunSprite : Resource.DINO_RUN_DOWN_SPRITE) {
+			dinoDownRun.addSprite(dinoDownRunSprite);
+		}
+
+		dinoJump = Resource.DINO_JUMP_SPRITE;
+		dinoDead = Resource.DINO_DEAD_SPRITE;
 		y = GROUND_Y - dinoJump.getHeight();
 		maxY = y;
 		highJumpMaxY = setJumpMaxY(GRAVITY);
@@ -137,7 +138,6 @@ public class Dino {
 	
 	public void jump() {
 		if(y == GROUND_Y - dinoRun.getSprite().getHeight()) {
-			jumpSound.play();
 			speedY = SPEED_Y;
 			y += speedY;
 		}

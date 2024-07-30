@@ -1,10 +1,10 @@
 package game_object;
 
 import user_interface.GameScreen;
+import util.Resource;
 
 import static user_interface.GameWindow.SCREEN_HEIGHT;
 import static user_interface.GameWindow.SCREEN_WIDTH;
-import static util.Resource.getImage;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -42,8 +42,8 @@ public class Clouds extends Scenario {
 	public Clouds(GameScreen gameScreen) {
 		super(gameScreen);
 		clouds = new HashSet<Cloud>();
-		cloudWidthScaled = getImage("resources/cloud.png").getWidth() * 2;
-		cloudHeightScaled = getImage("resources/cloud.png").getHeight() * 2;
+		cloudWidthScaled = Resource.CLOUD_SPRITE.getWidth() * 2;
+		cloudHeightScaled = Resource.CLOUD_SPRITE.getHeight() * 2;
 
 	}
 
@@ -72,7 +72,7 @@ public class Clouds extends Scenario {
 					return;
 			}
 			if (Math.random() * 100 < CLOUD_PERCENTAGE)
-				clouds.add(new Cloud(getImage("resources/cloud.png"), SCREEN_WIDTH,
+				clouds.add(new Cloud(Resource.CLOUD_SPRITE, SCREEN_WIDTH,
 						(int) (Math.random() * (SCREEN_HEIGHT / 2))));
 		}
 	}

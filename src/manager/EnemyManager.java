@@ -2,11 +2,12 @@ package manager;
 
 import game_object.Birds;
 import game_object.Cactuses;
-import misc.EnemyType;
 import user_interface.GameScreen;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+
+import enumeration.EnemyType;
 
 public class EnemyManager {
 	
