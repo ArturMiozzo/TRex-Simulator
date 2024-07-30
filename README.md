@@ -17,9 +17,9 @@ java -cp "bin" "Main"
 ```
 
 ## Comandos do jogo
-**Pular: `ARROW UP`, `SPACE`, `W`** <br/>
-**Abaixar: `ARROW DOWN`, `S`** <br/>
-**Pausar: `ESC`, `P`**
+**Pular: `ARROW UP`, `SPACE`** <br/>
+**Abaixar: `ARROW DOWN`** <br/>
+**Fechar: `ESC`**
 
 ## Créditos
 Jogo feito com base na versão [Chrome Dinosaur Game](https://github.com/bohdankordon/chrome-dino-java) de Bohdan Kordon.

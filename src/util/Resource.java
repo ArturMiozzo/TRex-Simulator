@@ -15,7 +15,8 @@ public class Resource {
 	private static final int NUMBER_WIDTH = 20;
 	private static final int NUMBER_HEIGHT = 21;
 
-	private static final String RESOURCES_PATH = "resources";
+	public static final String RESOURCES_PATH = "resources";
+	
 	private static final String[] BIRD_FILE = { "bird-fly-1.png", "bird-fly-2.png" };
 	private static final String[] CACTUS_FILE = { "cactus-1.png", "cactus-2.png", "cactus-3.png", "cactus-4.png", "cactus-5.png", "cactus-6.png", "cactus-7.png", "cactus-8.png", "cactus-9.png" };
 	private static final String[] DINO_RUN_FILE = { "dino-run-1.png", "dino-run-2.png" };
@@ -88,7 +89,7 @@ public class Resource {
 		for(int index=0; index<count; index++) {
 			imagesBuffer.add(cropImage(imageBuffer, index, cropWidth, cropHeight));
 		}
-		
+
 		return imagesBuffer.toArray(BufferedImage[]::new);
 	}
 	

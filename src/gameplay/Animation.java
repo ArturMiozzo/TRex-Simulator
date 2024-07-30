@@ -11,12 +11,13 @@ public class Animation {
 	private int updateTime;
 	private long lastUpdateTime = 0;
 	
+	// classe que calcula animacoes dos objetos do jogo
 	public Animation(int updateTime) {
 		this.updateTime = updateTime;
 		sprites = new ArrayList<BufferedImage>();
 	}
 	
-	// updating sprite every set milliseconds
+	// troca de sprite a cada updateTime milisegundos
 	public void updateSprite() {
 		if(System.currentTimeMillis() - lastUpdateTime >= updateTime) {
 			currentSpriteIndex++;
