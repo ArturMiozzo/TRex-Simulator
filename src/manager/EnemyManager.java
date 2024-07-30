@@ -78,10 +78,4 @@ public class EnemyManager {
 		cactuses.draw(g);
 		birds.draw(g);
 	}
-	
-	public void drawHitbox(Graphics g) {
-		cactuses.drawHitbox(g);
-		birds.drawHitbox(g);
-	}
-	
 }

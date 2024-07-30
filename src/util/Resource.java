@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+// classe com metodos estaticos para administrar os recursos
+// Sprites e arquivos de disco
 public class Resource {
 	
 	private static final int NUMBER_WIDTH = 20;
@@ -51,7 +53,6 @@ public class Resource {
 		File file = new File(path);
 		BufferedImage image = null;
 		try {
-			// ClassLoader here is because i just made jar file of this game so i can access all sprites
 			if(file.exists())
 				image = ImageIO.read(file);
 			else {

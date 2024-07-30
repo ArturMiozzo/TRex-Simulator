@@ -17,7 +17,7 @@ public class Animation {
 		sprites = new ArrayList<BufferedImage>();
 	}
 	
-	// troca de sprite a cada updateTime milisegundos
+	// troca de sprite a cada updateTime milisegundos (calculados com base no fps)
 	public void updateSprite() {
 		if(System.currentTimeMillis() - lastUpdateTime >= updateTime) {
 			currentSpriteIndex++;
@@ -36,6 +36,10 @@ public class Animation {
 			return sprites.get(currentSpriteIndex);
 		}
 		return null;
+	}
+
+	public int getSpriteIndex(){
+		return currentSpriteIndex;
 	}
 	
 }

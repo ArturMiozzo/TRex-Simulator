@@ -8,12 +8,13 @@ import manager.EnemyManager;
 
 public abstract class Enemy {
 
-    public EnemyManager eManager;
+    public EnemyManager enemyManager;
     public GameScreen gameScreen;
 
-    public Enemy(GameScreen gameScreen, EnemyManager eManager) {
+    // classe base para os inimigos
+    public Enemy(GameScreen gameScreen, EnemyManager enemyManager) {
         this.gameScreen = gameScreen;
-        this.eManager = eManager;
+        this.enemyManager = enemyManager;
     }
 
     public abstract void updatePosition();
@@ -24,10 +25,8 @@ public abstract class Enemy {
 
     public abstract void draw(Graphics g);
 
-    public abstract void drawHitbox(Graphics g);
-
-    public EnemyManager geteManager() {
-        return eManager;
+    public EnemyManager getenemyManager() {
+        return enemyManager;
     }
 
     public GameScreen getGameScreen() {

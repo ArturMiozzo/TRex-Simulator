@@ -4,6 +4,7 @@ import java.awt.Graphics;
 
 import user_interface.GameScreen;
 
+// classe base do cenario
 public abstract class Scenario {
 
     public GameScreen gameScreen;
