@@ -30,25 +30,32 @@ public class Controls {
 	
 	GameScreen gameScreen;
 	
+	// registra controles do jogo
 	public Controls(GameScreen gameScreen) {
 
 		this.gameScreen = gameScreen;
 
-		// PRESS RELEASE ARROW UP //
+		// Seta para cima
+		// aperta
 		pressUp.getInputMap(FOCUS_STATE).put(KeyStroke.getKeyStroke("UP"), UP);
 		pressUp.getActionMap().put(UP, new PressUpAction());
+		//solta
 		releaseUp.getInputMap(FOCUS_STATE).put(KeyStroke.getKeyStroke("released UP"), RELEASED_UP);
 		releaseUp.getActionMap().put(RELEASED_UP, new ReleaseUpAction());
 
-		// PRESS RELEASE SPACE //
+		// espaço
+		// aperta
 		pressUp.getInputMap(FOCUS_STATE).put(KeyStroke.getKeyStroke("SPACE"), SPACE_UP);
 		pressUp.getActionMap().put(SPACE_UP, new PressUpAction());
+		//solta
 		releaseUp.getInputMap(FOCUS_STATE).put(KeyStroke.getKeyStroke("released SPACE"), RELEASED_SPACE_UP);
 		releaseUp.getActionMap().put(RELEASED_SPACE_UP, new ReleaseUpAction());
 
-		// PRESS RELEASE ARROW DOWN //
+		// seta para baixo
+		// aperta
 		pressDown.getInputMap(FOCUS_STATE).put(KeyStroke.getKeyStroke("DOWN"), DOWN);
 		pressDown.getActionMap().put(DOWN, new PressDownAction());
+		//solta
 		releaseDown.getInputMap(FOCUS_STATE).put(KeyStroke.getKeyStroke("released DOWN"), RELEASED_DOWN);
 		releaseDown.getActionMap().put(RELEASED_DOWN, new ReleaseDownAction());
 	}

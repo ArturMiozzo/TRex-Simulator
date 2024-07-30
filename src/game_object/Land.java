@@ -13,11 +13,14 @@ public class Land extends Scenario {
 
 	private double x = 0;
 	private int y;
-	// here i made land 2x times bigger
+	
+	// define tamanho em escala, 2x maior
 	private int landWidthScaled;
 	private int landHeightScaled;
+
 	private BufferedImage land;
 
+	// classe do chao
 	public Land(GameScreen gameScreen) {
 		super(gameScreen);
 		land = Resource.LAND_SPRITE;
@@ -26,21 +29,26 @@ public class Land extends Scenario {
 		landHeightScaled = land.getHeight() * 2;
 	}
 
+	// atualiza posicao
+	// desloca de acordo com a velocidade 
 	@Override
 	public void updatePosition() {
 		x += Math.round(gameScreen.getSpeedX() * 100d) / 100d;
 	}
 
+	// reseta posicao
 	public void resetLand() {
 		x = 0;
 	}
 
+	// desenha o chao
 	@Override
 	public void draw(Graphics g) {
-		// drawing another land if image is ending
-		// if land out of screen set it to 0
+
 		g.drawImage(land, (int) x, y, landWidthScaled, landHeightScaled, null);
 		
+		// se cruzar a borda da tela, adiciona mais um sprite do lado
+		// dando a impressao de nunca acabar
 		if (landWidthScaled - SCREEN_WIDTH <= (int) Math.abs(x))
 			g.drawImage(land, (int) (landWidthScaled + x), y, landWidthScaled, landHeightScaled, null);
 		

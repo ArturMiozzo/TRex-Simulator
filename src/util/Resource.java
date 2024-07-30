@@ -14,11 +14,14 @@ import javax.imageio.ImageIO;
 // Sprites e arquivos de disco
 public class Resource {
 	
+	// tamanho de cada algarismo no sprite dos numeros
 	private static final int NUMBER_WIDTH = 20;
 	private static final int NUMBER_HEIGHT = 21;
-
-	public static final String RESOURCES_PATH = "resources";
 	
+	// pasta que guarda os resources
+	public static final String RESOURCES_PATH = "resources";
+		
+	// arquivo na pasta de resources para cada sprite
 	private static final String[] BIRD_FILE = { "bird-fly-1.png", "bird-fly-2.png" };
 	private static final String[] CACTUS_FILE = { "cactus-1.png", "cactus-2.png", "cactus-3.png", "cactus-4.png", "cactus-5.png", "cactus-6.png", "cactus-7.png", "cactus-8.png", "cactus-9.png" };
 	private static final String[] DINO_RUN_FILE = { "dino-run-1.png", "dino-run-2.png" };
@@ -33,7 +36,8 @@ public class Resource {
 	private static final String INTRO_FILE = "intro-text.png";
 	private static final String GAME_OVER_FILE = "game-over.png";
 	private static final String REPLAY_FILE = "replay.png";
-
+	
+	// sprites de cada objeto
 	public static final BufferedImage[] BIRD_SPRITE = loadResource(BIRD_FILE);
 	public static final BufferedImage[] CACTUS_SPRITE = loadResource(CACTUS_FILE);
 	public static final BufferedImage[] DINO_RUN_SPRITE = loadResource(DINO_RUN_FILE);
@@ -49,6 +53,7 @@ public class Resource {
 	public static final BufferedImage GAME_OVER_SPRITE = loadResource(GAME_OVER_FILE);
 	public static final BufferedImage REPLAY_SPRITE = loadResource(REPLAY_FILE);
 	
+	// funcao para carregar imagem do disco
 	public static BufferedImage getImage(String path) {
 		File file = new File(path);
 		BufferedImage image = null;
@@ -65,11 +70,13 @@ public class Resource {
 		return image;
 	}
 	
+	// funcao para carregar recurso unico
 	private static BufferedImage loadResource(String resourceFile) {
 		Path resourcePath = Paths.get(RESOURCES_PATH, resourceFile);
 		return getImage(resourcePath.toString());
 	}
 	
+	// funcao para carregar recursos multiplos
 	private static BufferedImage[] loadResource(String[] resourceFiles) {
 
 		List<BufferedImage> imagesBuffer = new ArrayList<BufferedImage>();
@@ -80,8 +87,9 @@ public class Resource {
 		}
 
 		return imagesBuffer.toArray(BufferedImage[]::new);
-	}
+	}	
 	
+	// funcao para carregar recurso unico, mas com multiplos sprites
 	private static BufferedImage[] loadResource(String resourceFile, int cropWidth, int cropHeight, int count) {
 		
 		BufferedImage imageBuffer = loadResource(resourceFile);
@@ -94,6 +102,7 @@ public class Resource {
 		return imagesBuffer.toArray(BufferedImage[]::new);
 	}
 	
+	// corta imagem baseado nas coordenadas
 	private static BufferedImage cropImage(BufferedImage image, int index, int cropWidth, int cropHeight) {
 		return image.getSubimage(index * cropWidth, 0, cropWidth, cropHeight);
 	}
