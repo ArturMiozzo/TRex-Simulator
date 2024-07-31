@@ -3,6 +3,7 @@ package util;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class Resource {
 	// arquivo na pasta de resources para cada sprite
 	private static final String[] BIRD_FILE = { "bird-fly-1.png", "bird-fly-2.png" };
 	private static final String[] CACTUS_FILE = { "cactus-1.png", "cactus-2.png", "cactus-3.png", "cactus-4.png", "cactus-5.png", "cactus-6.png", "cactus-7.png", "cactus-8.png", "cactus-9.png" };
+	private static final String ROCK_FILE = "rock.png";
 	private static final String[] DINO_RUN_FILE = { "dino-run-1.png", "dino-run-2.png" };
 	private static final String[] DINO_RUN_DOWN_FILE = { "dino-down-run-1.png", "dino-down-run-2.png" };
 	private static final String DINO_JUMP_FILE = "dino-jump.png";
@@ -40,6 +42,7 @@ public class Resource {
 	// sprites de cada objeto
 	public static final BufferedImage[] BIRD_SPRITE = loadResource(BIRD_FILE);
 	public static final BufferedImage[] CACTUS_SPRITE = loadResource(CACTUS_FILE);
+	public static final BufferedImage ROCK_SPRITE = loadResource(ROCK_FILE);
 	public static final BufferedImage[] DINO_RUN_SPRITE = loadResource(DINO_RUN_FILE);
 	public static final BufferedImage[] DINO_RUN_DOWN_SPRITE = loadResource(DINO_RUN_DOWN_FILE);
 	public static final BufferedImage DINO_JUMP_SPRITE = loadResource(DINO_JUMP_FILE);
@@ -55,14 +58,24 @@ public class Resource {
 	
 	// funcao para carregar imagem do disco
 	public static BufferedImage getImage(String path) {
-		File file = new File(path);
 		BufferedImage image = null;
 		try {
-			if(file.exists())
+			// Remove a possível barra inicial se estiver presente
+			if (path.startsWith("/")) {
+				path = path.substring(1);
+			}
+
+			// Primeiro, tenta carregar o arquivo diretamente
+			File file = new File(path);
+			if (file.exists()) {
 				image = ImageIO.read(file);
-			else {
-				path = path.substring(path.indexOf("/") + 1);
-				image = ImageIO.read(ClassLoader.getSystemClassLoader().getResource(path));
+			} else {
+				// Carrega a imagem do classpath
+				InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream(path);
+				if (is == null) {
+					throw new IllegalArgumentException("Resource not found: " + path);
+				}
+				image = ImageIO.read(is);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -80,8 +93,8 @@ public class Resource {
 	private static BufferedImage[] loadResource(String[] resourceFiles) {
 
 		List<BufferedImage> imagesBuffer = new ArrayList<BufferedImage>();
-		
-		for(String resourceFile : resourceFiles) {
+
+		for (String resourceFile : resourceFiles) {
 			Path resourcePath = Paths.get(RESOURCES_PATH, resourceFile);
 			imagesBuffer.add(getImage(resourcePath.toString()));
 		}
@@ -93,9 +106,9 @@ public class Resource {
 	private static BufferedImage[] loadResource(String resourceFile, int cropWidth, int cropHeight, int count) {
 		
 		BufferedImage imageBuffer = loadResource(resourceFile);
-		List<BufferedImage> imagesBuffer = new ArrayList<BufferedImage>();		
+		List<BufferedImage> imagesBuffer = new ArrayList<BufferedImage>();
 
-		for(int index=0; index<count; index++) {
+		for (int index = 0; index < count; index++) {
 			imagesBuffer.add(cropImage(imageBuffer, index, cropWidth, cropHeight));
 		}
 

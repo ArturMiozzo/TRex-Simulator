@@ -2,6 +2,7 @@ package gameplay;
 
 import game_object.Birds;
 import game_object.Cactuses;
+import game_object.Rocks;
 import user_interface.GameScreen;
 
 import java.awt.Graphics;
@@ -23,18 +24,21 @@ public class EnemyManager {
 	// distancia corrente entre inimigos
 	private double distanceBetweenEnemies = 750;
 
-	// chance de spawn de catus e birds
+	// chance de spawn de cactos, pássaros e rochas
 	private double cactusesPercentage = 2;
 	private double birdsPercentage = 1;
-	
+	private double rocksPercentage = 1;
+
 	private Cactuses cactuses;
 	private Birds birds;
-	
+	private Rocks rocks;
+
 	public EnemyManager(GameScreen gameScreen) {
 		cactuses = new Cactuses(gameScreen, this);
 		birds = new Birds(gameScreen, this);
+		rocks = new Rocks(gameScreen, this);
 	}
-	
+
 	public double getDistanceBetweenEnemies() {
 		return distanceBetweenEnemies;
 	}
@@ -47,28 +51,37 @@ public class EnemyManager {
 		return birdsPercentage;
 	}
 
+	public double getRocksPercentage() {
+		return rocksPercentage;
+	}
+
 	// spawna inimigos aleatoriamente
 	public void updatePosition() {
-		
+
 		// atualiza dificuldade
 		cactusesPercentage += PERCENTAGE_INC;
 		birdsPercentage += PERCENTAGE_INC;
+		rocksPercentage += PERCENTAGE_INC;
 
-		if(distanceBetweenEnemies > MINIMUM_DISTANCE)
+		if (distanceBetweenEnemies > MINIMUM_DISTANCE)
 			distanceBetweenEnemies += DISTANCE_DEC;
 
 		cactuses.updatePosition();
 		birds.updatePosition();
-		
-		// se tiver espaço, gera um inimigo aleatorio
-		if(cactuses.spaceAvailable() && birds.spaceAvailable()) {
-		
-			switch (EnemyType.values()[(int)(Math.random() * EnemyType.values().length)]) {
+		rocks.updatePosition();
+
+		// se tiver espaço, gera um inimigo aleatório
+		if (cactuses.spaceAvailable() && birds.spaceAvailable() && rocks.spaceAvailable()) {
+
+			switch (EnemyType.values()[(int) (Math.random() * EnemyType.values().length)]) {
 				case CACTUS:
-					if(cactuses.createCactuses())
+					if (cactuses.createCactuses())
 						break;
 				case BIRD:
-					if(birds.createBird())
+					if (birds.createBird())
+						break;
+				case ROCK:
+					if (rocks.createRocks())
 						break;
 				default:
 					cactuses.createCactuses();
@@ -76,23 +89,25 @@ public class EnemyManager {
 			}
 		}
 	}
-	
-	// detecta colisao com inimigos
+
+	// detecta colisão com inimigos
 	public boolean isCollision(Rectangle hitBox) {
-		if(cactuses.isCollision(hitBox) || birds.isCollision(hitBox))
+		if (cactuses.isCollision(hitBox) || birds.isCollision(hitBox) || rocks.isCollision(hitBox))
 			return true;
 		return false;
 	}
-	
+
 	// remove inimigos
 	public void clearEnemy() {
 		cactuses.clearCactuses();
 		birds.clearBirds();
+		rocks.clearRocks();
 	}
-		
+
 	// desenha inimigos
 	public void draw(Graphics g) {
 		cactuses.draw(g);
 		birds.draw(g);
+		rocks.draw(g);
 	}
 }

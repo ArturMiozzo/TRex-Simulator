@@ -29,7 +29,11 @@ public class Cactuses extends Enemy {
 			this.x = x;
 			this.y = y;
 		}
-		
+
+		public void setX(double x) {
+			this.x = x;
+		}
+
 	}
 	
 	// 'escala' utiliza nas hitbox dos cactus
@@ -45,7 +49,17 @@ public class Cactuses extends Enemy {
 		super(gameScreen, enemyManager);
 		cactuses = new ArrayList<Cactus>();
 	}
-	
+
+	public void setX(double x) {
+		for (Cactus cactus : cactuses) {
+			cactus.setX(x);
+		}
+	}
+
+	public List<Cactus> getCactusesList() {
+		return cactuses;
+	}
+
 	// atualiza posicao dos cactus na mesma velocidade da tela
 	@Override
 	public void updatePosition() {
@@ -55,7 +69,7 @@ public class Cactuses extends Enemy {
 			cactus.x += Math.round(gameScreen.getSpeedX() * 100d) / 100d;
 
 			// se saiu da tela, remove da lista
-			if((int)cactus.x + cactus.cactusImage.getWidth() < 0) {
+			if ((int) cactus.x + cactus.cactusImage.getWidth() < 0) {
 				i.remove();
 			}
 		}
@@ -64,9 +78,9 @@ public class Cactuses extends Enemy {
 	// verifica se existe espaço na tela para adicionar outro cactus
 	@Override
 	public boolean spaceAvailable() {
-		for(Iterator<Cactus> i = cactuses.iterator(); i.hasNext();) {
+		for (Iterator<Cactus> i = cactuses.iterator(); i.hasNext();) {
 			Cactus cactus = i.next();
-			if(SCREEN_WIDTH - (cactus.x + cactus.cactusImage.getWidth()) < enemyManager.getDistanceBetweenEnemies()) {
+			if (SCREEN_WIDTH - (cactus.x + cactus.cactusImage.getWidth()) < enemyManager.getDistanceBetweenEnemies()) {
 				return false;
 			}
 		}
@@ -90,9 +104,10 @@ public class Cactuses extends Enemy {
 				int y = GROUND_Y - cactusImage.getHeight();
 
 				// se for adiacionar mais de 1 por vez, adiciona no x para nao ficar um em cima do outro
-				if(i > 0)
-					x = (int)cactuses.get(cactuses.size() - 1).x + cactuses.get(cactuses.size() - 1).cactusImage.getWidth();
-				
+				if (i > 0)
+					x = (int) cactuses.get(cactuses.size() - 1).x
+							+ cactuses.get(cactuses.size() - 1).cactusImage.getWidth();
+
 				cactuses.add(new Cactus(cactusImage, x, y));
 			}
 			return true;
@@ -103,10 +118,10 @@ public class Cactuses extends Enemy {
 	// detecta colisao
 	@Override
 	public boolean isCollision(Rectangle dinoHitBox) {
-		for(Iterator<Cactus> i = cactuses.iterator(); i.hasNext();) {
+		for (Iterator<Cactus> i = cactuses.iterator(); i.hasNext();) {
 			Cactus cactus = i.next();
 			Rectangle cactusHitBox = getHitbox(cactus);
-			if(cactusHitBox.intersects(dinoHitBox))
+			if (cactusHitBox.intersects(dinoHitBox))
 				return true;
 		}
 		return false;
@@ -134,9 +149,9 @@ public class Cactuses extends Enemy {
 	// desenha os cactus
 	@Override
 	public void draw(Graphics g) {
-		for(Iterator<Cactus> i = cactuses.iterator(); i.hasNext();) {
+		for (Iterator<Cactus> i = cactuses.iterator(); i.hasNext();) {
 			Cactus cactus = i.next();
-			g.drawImage(cactus.cactusImage, (int)(cactus.x), cactus.y, null);
+			g.drawImage(cactus.cactusImage, (int) (cactus.x), cactus.y, null);
 		}
 	}
 }

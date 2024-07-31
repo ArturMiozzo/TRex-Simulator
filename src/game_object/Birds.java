@@ -48,6 +48,10 @@ public class Birds extends Enemy {
 		birds = new ArrayList<Bird>();
 	}
 
+	public List<Bird> getBirdsList() {
+		return birds;
+	}
+
 	// função de atualizar a posicao dos birds
 	@Override
 	public void updatePosition() {
