@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import manager.EnemyManager;
+import gameplay.EnemyManager;
 
 public class Cactuses extends Enemy {
 	

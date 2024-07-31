@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import user_interface.GameScreen;
-import manager.EnemyManager;
+import gameplay.EnemyManager;
 
 public abstract class Enemy {
 

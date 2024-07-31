@@ -1,4 +1,4 @@
-package manager;
+package gameplay;
 
 import game_object.Birds;
 import game_object.Cactuses;

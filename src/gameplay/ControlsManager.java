@@ -1,6 +1,5 @@
-package manager;
+package gameplay;
 
-import gameplay.Controls;
 import user_interface.GameScreen;
 
 public class ControlsManager {

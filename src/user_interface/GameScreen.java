@@ -16,8 +16,8 @@ import game_object.Dino;
 import game_object.Land;
 import game_object.Score;
 import gameplay.Controls;
-import manager.ControlsManager;
-import manager.EnemyManager;
+import gameplay.ControlsManager;
+import gameplay.EnemyManager;
 import util.Resource;
 
 public class GameScreen extends JPanel implements Runnable {

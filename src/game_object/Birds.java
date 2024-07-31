@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import gameplay.Animation;
-import manager.EnemyManager;
+import gameplay.EnemyManager;
 
 public class Birds extends Enemy {
 
